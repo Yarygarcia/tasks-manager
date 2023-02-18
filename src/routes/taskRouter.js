@@ -1,10 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const TaskCtrl = require('../controllers/TaskController');
+const token = require('../helpers/Auth')
 
 /**
  * @swagger
  * components:
+ *    securitySchemes:
+ *      ApiTokenss:
+ *          type: apiKey
+ *          in: header
+ *          name: autorizacion
  *    schemas:
  *      Task:
  *          type: object
@@ -15,6 +21,7 @@ const TaskCtrl = require('../controllers/TaskController');
  *              description:
  *                  type: string
  *                  description: Descripción de la tarea
+ *              
  *          required:
  *              - title
  */
@@ -23,6 +30,8 @@ const TaskCtrl = require('../controllers/TaskController');
  * @swagger
  * /api/task:
  *  post:
+ *      security:
+ *          - ApiTokenss: []
  *      summary: Crear una tarea
  *      tags: [Task]
  *      requestBody:
@@ -40,12 +49,14 @@ const TaskCtrl = require('../controllers/TaskController');
  *      
  */
 //ruta para crear  tareas
-router.post( '/task', TaskCtrl.crear );
+router.post( '/task', token.verificar,TaskCtrl.crear );
 
 /**
  * @swagger
  * /api/tasks:
  *  get:
+ *      security:
+ *          - ApiTokenss: []
  *      summary: Leer todas las tareas
  *      tags: [Task]
  *      responses:
@@ -59,12 +70,14 @@ router.post( '/task', TaskCtrl.crear );
  *                              $ref: '#/components/schemas/Task'
  */
 //ruta para listar todas las tareas
-router.get( '/tasks', TaskCtrl.listar );
+router.get( '/tasks', token.verificar,TaskCtrl.listar );
 
 /**
  * @swagger
  * /api/task/{id}:
  *   delete:
+ *      security:
+ *          - ApiTokenss: []
  *      summary: Eliminar una tarea por su id
  *      tags: [Task]
  *      parameters:
@@ -82,13 +95,15 @@ router.get( '/tasks', TaskCtrl.listar );
  *              
  */
 //ruta para eliminar una tarea por su id
-router.delete( '/task/:id', TaskCtrl.eliminarTarea );
+router.delete( '/task/:id', token.verificar, TaskCtrl.eliminarTarea );
 
 
 /**
  * @swagger
  * /api/task/{id}:
  *   put:
+ *      security:
+ *          - ApiTokenss: []
  *      summary: Marcar tarea como hecha
  *      tags: [Task]
  *      parameters:
@@ -106,7 +121,7 @@ router.delete( '/task/:id', TaskCtrl.eliminarTarea );
  *              
  */
 //Ruta de completar una tarea con su id
-router.put( '/task/:id', TaskCtrl.tareaCompleta );
+router.put( '/task/:id', token.verificar, TaskCtrl.tareaCompleta );
 
 //Exportar modulo
 module.exports = router;

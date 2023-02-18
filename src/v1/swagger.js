@@ -8,7 +8,7 @@ const swagger={
         openapi:"3.0.0",
         info:{
             title: "task manager",
-            version: "1.0.0"
+            version: "1.0.0",
         },
         servers:[
             {
@@ -25,7 +25,7 @@ const swaggerSpec = swaggerJSDoc( swagger );
 const swaggerDocs = ( app,port ) => {
     app.use( '/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec) );
 
-    console.log(`http://localhost:${port}/api/docs`)
+    console.log(`Documentación con swagger: http://localhost:${port}/api/docs`)
 }
 //Exportar modulo
 module.exports = {swaggerDocs};
